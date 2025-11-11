@@ -126,4 +126,104 @@ Tutte le GPU AI leader ora utilizzano HBM come memoria. I piani per il 2025 prev
 
 La CPU Grace ha LPDDR5X ad alta capacità, mentre la GPU ha HBM3 ad alta larghezza di banda. Tuttavia, la CPU e la GPU sono su package separati, collegati tramite NVLink-C2C a novecento gigabyte al secondo. Questo modello è più semplice da integrare ma più difficile sul lato software. La latenza della memoria collegata all'altro chip è molto più alta e potrebbe influenzare un numero significativo di workload. Come tale, la memoria non è del tutto uniforme e presenta le proprie sfide.
 
-L'HBM4
+## L'HBM4 e le Innovazioni Future
+
+L'HBM4 è a pochi anni di distanza, con Samsung e Micron che affermano che arriverà fino a sedici strati con un throughput di un virgola cinque terabyte al secondo per stack. Questo è più del doppio della larghezza di banda di quello che abbiamo oggi con solo un fattore da uno virgola tre a uno virgola cinque volte il consumo energetico, ma questa scalabilità non è sufficiente, poiché il consumo energetico della memoria continua ad aumentare complessivamente. L'HBM4 cambierà anche a una larghezza di duemilaquarantotto bit per stack, riducendo le velocità di dati di una piccola quantità a sette virgola cinque gigabit al secondo, aiutando con il consumo energetico e l'integrità del segnale. È probabile che le velocità di dati aumenteranno ai livelli dell'HBM3E con l'HBM4E o qualcosa di simile.
+
+L'altro cambiamento significativo riguarda il die base dell'HBM. Il die base verrà fabbricato su processi FinFET anziché sulla tecnologia CMOS planare utilizzata ora. Per Micron e SK Hynix che non hanno questa capacità logica, il die base verrà fabbricato da una foundry, una fabbrica dedicata ai semiconduttori, con TSMC che ha già fatto annunci che sarà il partner per SK Hynix. Inoltre, ci sarà una personalizzazione del die base per i singoli clienti.
+
+Gli annunci sull'HBM4 prevedono che almeno due diverse forme di chip base saranno in uso, permettendo di ottimizzare l'interfaccia di memoria per diverse velocità e lunghezze. È probabile che la funzionalità che controlla la macchina a stati della DRAM si sposterà sul chip base per controllare più efficientemente i chip DRAM, e le connessioni solo verticali potrebbero consentire di ridurre l'energia per bit.
+
+L'HBM personalizzato può abilitare molteplici altre architetture di package al di fuori degli assemblaggi convenzionali basati su CoWoS, ovvero Chip on Wafer on Substrate, un tipo di packaging avanzato, che vediamo oggi. Potrebbe esserci un repeater PHY, ovvero un ripetitore di interfaccia fisica, per concatenare in serie più righe di HBM, anche se qualsiasi cosa oltre i due ranghi vedrebbe rendimenti decrescenti.
+
+Con l'HBM4 e i successori, è stato suggerito il passaggio al bonding ibrido, ovvero l'incollaggio ibrido. Questo permetterà stack HBM più sottili poiché il gap dei bump, le piccole sfere di saldatura, viene rimosso, e una migliore dissipazione del calore. Inoltre, permetterà altezze di stack da sedici a venti o più strati. Potrebbe anche ridurre il consumo energetico di una piccola quantità poiché la distanza fisica che i segnali percorrono sarà ridotta. Le sfide sono sostanziali però: ottenere la resa di uno stack incollato di sedici o più die, nessuno perfettamente piatto, non è facile. Nessuno è vicino a una soluzione pronta per la produzione ad alto volume qui.
+
+Tutto l'HBM4 iniziale non utilizzerà il bonding ibrido, e ci aspettiamo che questo rimanga vero per molto più tempo di quanto la maggior parte spererebbe.
+
+## Interfacce Personalizzate e Nuove Architetture
+
+La connessione tra CPU, GPU o acceleratore e memoria si trova nel chip base. Migliorare questa connessione è una possibile via per superare le limitazioni della memoria. Eliyan, una startup finanziata da Micron e Intel tra gli altri, sta guidando questo approccio con la loro interfaccia personalizzata UMI, che sta per Universal Memory Interconnect.
+
+Questa interfaccia UMI viene utilizzata con un die ASIC, ovvero Application-Specific Integrated Circuit, un circuito integrato specifico per l'applicazione, che funge da chip base per uno stack HBM o da controller di modulo per altri tipi di memoria. Questo chiplet contiene sia il controller di memoria che l'interconnessione fisica alla memoria, nota come PHY. L'UMI si connette esternamente alla GPU host, collegandosi al fabric, ovvero l'infrastruttura di interconnessione, dell'host.
+
+Prodotti con un processo CMOS completo, possono essere veloci ed efficienti, utilizzando un protocollo avanzato chiamato Nulink per connettersi all'host ed eliminare l'ingombro del controller di memoria dal silicio host.
+
+Le tecnologie di packaging di Eliyan funzionano anche con substrati standard e hanno una portata molto maggiore rispetto al packaging avanzato regolare. Questo potrebbe consentire HBM che non è adiacente al die ASIC, ma molto più lontano, il che significa che capacità più elevate possono essere accomodate. Il loro approccio utilizza anche meno area e meno bordo sull'host, il che significa che la larghezza del canale può essere aumentata. I chiplet di memoria UMI standardizzati potrebbero consentire di utilizzare HBM, DDR, memoria CXL e altro senza essere fissati a un tipo specifico, aumentando significativamente la flessibilità. Sebbene sia possibile che questo approccio possa offrire miglioramenti a breve termine, non affronta i problemi di costo sottostanti con l'HBM.
+
+## Memorie Emergenti: Oltre le DRAM Tradizionali
+
+Per tutto il tempo in cui DRAM e NAND sono state dominanti, c'è stata ricerca su alternative migliori. Il termine ombrello per queste è "memorie emergenti". È un po' un termine improprio poiché, finora, nessuna di esse è riuscita a emergere in un prodotto ad alto volume. Date le nuove sfide e gli incentivi legati all'intelligenza artificiale, vale comunque la pena di una breve discussione.
+
+La memoria più promettente per applicazioni discrete è la FeRAM, ovvero Ferroelectric RAM, memoria ferroelettrica ad accesso casuale. Invece di utilizzare un dielettrico, ovvero un materiale isolante, nel condensatore di storage, usano un ferroelettrico, un materiale che si polarizza in un campo elettrico. Questi hanno la caratteristica desiderabile di essere non volatili, cioè possono memorizzare dati quando sono spenti e non sprecano energia o tempo nei refresh.
+
+Micron ha mostrato risultati promettenti all'IEDM, International Electron Devices Meeting, una conferenza internazionale sui dispositivi elettronici, nel 2023 con densità comparabile alla loro DRAM D1β insieme a buone prestazioni di endurance, ovvero resistenza ai cicli di scrittura, e retention, ovvero ritenzione dei dati. In altre parole un buon candidato per l'uso in AI e machine learning se non fosse per un problema: il costo. È complessa da produrre e fa più uso di materiali esotici rispetto alle DRAM convenzionali, al punto che semplicemente non è competitiva al momento.
+
+La MRAM, Magnetic RAM, memoria magnetica ad accesso casuale, è un'altra area di ricerca promettente. Invece di utilizzare cariche elettriche, i dati vengono memorizzati tramite mezzi magnetici. La maggior parte dei design utilizza giunzioni a tunnel magnetico, note come MTJ (Magnetic Tunnel Junction), come cella di storage dei bit.
+
+All'IEDM 2022, SK Hynix e Kioxia hanno mostrato una cella MTJ con un selettore con un pitch di quarantacinque nanometri e una dimensione critica di venti nanometri. Insieme, hanno raggiunto la più alta densità MRAM fino ad oggi di zero virgola quarantanove gigabit per millimetro quadrato, maggiore della DRAM D1β di Micron che ha una densità di zero virgola quattrocentotrentacinque gigabit per millimetro quadrato. La cella presenta persino un design 4F². Il loro obiettivo è produrre in package discreti come alternativa alle DRAM.
+
+Al momento nessuna delle memorie alternative è ben posizionata per sfidare le DRAM. Alcune hanno celle più grandi o più lente. Alcune hanno processi più costosi. La maggior parte ha endurance limitata. Alcune hanno bassa resa. In pratica, i prodotti che vengono spediti per memorie magnetiche o a cambiamento di fase hanno dimensioni in megabyte, non gigabyte. Questo potrebbe cambiare, c'è molto denaro in gioco e una combinazione vincente potrebbe esistere in modo nascosto, ma c'è molto lavoro sia sui dispositivi che sulla scala di produzione da fare.
+
+## Compute in Memory: Ripensare l'Architettura Fondamentale
+
+Le DRAM sono state ostacolate fin dall'inizio dalla loro architettura. Sono una semplice macchina a stati senza alcuna logica di controllo, il che aiuta a mantenere basso il costo, ma significa che dipendono dall'host, la CPU, per controllarle.
+
+Questo paradigma è saldamente radicato: i moderni processi di fabbricazione delle DRAM sono così pesantemente ottimizzati e specializzati che non possono realisticamente produrre logica di controllo. Il gruppo industriale JEDEC, Joint Electron Devices Engineering Council, che stabilisce gli standard per i componenti elettronici, impone anche intrusioni minime dalla logica quando sviluppa nuovi standard.
+
+Il chip DRAM è totalmente dipendente dall'host: tutti i comandi vengono incanalati attraverso un'interfaccia condivisa per più banchi nella memoria, per conto di più thread nell'host. Ogni comando richiede quattro o più passaggi da emettere con tempi precisi per mantenere la DRAM funzionante correttamente. I chip DRAM non hanno nemmeno la logica per evitare conflitti.
+
+Questo è esacerbato dall'uso di un'interfaccia half-duplex antica: un chip DRAM può leggere o scrivere dati ma non entrambi contemporaneamente. L'host ha un modello esatto della DRAM e deve prevedere se l'interfaccia dovrebbe essere impostata per leggere o scrivere per ogni ciclo di clock. I comandi e i dati vengono inviati su fili separati, il che riduce la complessità temporale ma aumenta il conteggio dei fili e l'affollamento della spiaggia, ovvero lo spazio disponibile per le connessioni sulla GPU o CPU. Nel complesso, l'interfaccia di memoria è scesa di un ordine di grandezza al di sotto dei bit rate, della densità della spiaggia e dell'efficienza delle PHY alternative utilizzate dai chip logici.
+
+Il risultato di questi svantaggi è che i DIMM DDR5, i più comuni sui server, spendono oltre il novantanove percento dell'energia di lettura o scrittura nel controller host e nell'interfaccia. Altre varianti sono leggermente migliori: l'uso energetico dell'HBM è approssimativamente novantacinque percento interfaccia, cinque percento lettura/scrittura della cella di memoria, ma comunque da nessuna parte vicino al pieno potenziale delle DRAM.
+
+La funzionalità è semplicemente nel posto sbagliato. Naturalmente, la soluzione è spostarla in quello corretto: la logica di controllo dovrebbe essere on-chip con la memoria. Questo è il Compute in Memory, abbreviato come CIM, ovvero calcolo nella memoria.
+
+## Liberare il Potenziale dei Banchi di Memoria
+
+I banchi DRAM hanno un potenziale di prestazioni incredibile che va quasi completamente sprecato a causa delle interfacce.
+
+I banchi sono l'unità di base della costruzione DRAM. Comprendono otto sotto-banchi ciascuno con sessantaquattro megabit, ovvero ottomila righe per ottomila bit, di memoria. Il banco attiva e aggiorna una riga di ottomila bit alla volta ma ne trasferisce solo duecentocinquantasei dentro o fuori in qualsiasi operazione di input/output. Questa limitazione è dovuta alle connessioni esterne dagli amplificatori di senso: mentre la riga è supportata da ottomila amplificatori di senso, solo uno su trentadue amplificatori di senso, ovvero duecentocinquantasei, è connesso fuori dal sotto-banco, il che significa che le operazioni di lettura o scrittura sono limitate a duecentocinquantasei bit.
+
+Gli amplificatori di senso si trovano in un canyon circondato da alti condensatori. In uno smontaggio con fascio ionico focalizzato, noto come FIB (Focused Ion Beam), dell'ETH di Zurigo si può vedere che c'è cablaggio a livelli superiori che necessita di alti via, collegamenti verticali, che si estendono verso il basso per fare contatti agli amplificatori di senso.
+
+Anche con questa interfaccia limitata, uno su trentadue accessibile in qualsiasi momento, la capacità di picco di lettura/scrittura di un banco è approssimativamente duecentocinquantasei gigabit al secondo, con una media più vicina a centoventotto gigabit al secondo poiché almeno il cinquanta percento del tempo viene utilizzato per passare a una nuova riga attiva. Con trentadue banchi per chip da sedici gigabit, il pieno potenziale di un chip è quattro terabyte al secondo.
+
+Più in alto nella gerarchia, i banchi sono connessi in gruppi di banchi, che a loro volta si connettono all'interfaccia fuori dal chip DRAM. Nell'HBM, ogni die ha duecentocinquantasei linee dati con un throughput di picco di duecentocinquantasei gigabyte al secondo per die. Questo collo di bottiglia può utilizzare solo un sedicesimo del potenziale sottostante dei banchi.
+
+Per aggiungere insulto all'ingiuria, sono necessari due picojoule di energia per trasferire un singolo bit fuori dal chip, venti volte più di quanto ci è voluto per spostarlo dentro o fuori dalla cella. La maggior parte di questo avviene alle due interfacce a ciascuna estremità dei fili DQ, Data Question-mark, una linea dati utilizzata sia per la lettura che per la scrittura, e nella logica del controller sull'host.
+
+Con un'architettura così dispendiosa, è inevitabile che vengano fatti sforzi per accedere a più del potenziale di prestazioni.
+
+## Il Percorso Verso il Futuro: Il Pieno Potenziale delle DRAM
+
+Anche semplici esempi teorici mostrano che c'è un enorme potenziale disponibile qui. L'implementazione dello standard UCIe, Universal Chiplet Interconnect Express, uno standard per l'interconnessione tra chiplet, consentirebbe un throughput di undici terabit al secondo per millimetro di bordo, quasi dodici volte migliore dell'HBM3E. L'energia per bit scenderebbe di un ordine di grandezza da due picojoule a zero virgola venticinque picojoule. E l'UCIe non è nemmeno la soluzione più recente: lo standard proprietario Nulink di Eliyan, per fare solo un esempio, rivendica miglioramenti ancora maggiori.
+
+L'avvertenza qui è che se il fabric host viene esteso attraverso l'interfaccia, allora un sottoinsieme del set di comandi del fabric deve essere gestito sul lato DRAM. Ogni banco avrebbe bisogno di implementare localmente la macchina a stati: pre-carica, selezione dell'indirizzo, attivazione, lettura/scrittura, chiusura, eccetera. Questo richiede logica relativamente complessa fabbricata on-chip con la DRAM.
+
+Aggiungere logica a un chip DRAM non è, ovviamente, un compito semplice. La buona notizia è che l'HBM include un chip base CMOS, e quando arriverà la DRAM 3D c'è una certezza virtuale che buona logica CMOS venga incollata sopra o sotto lo stack di memoria. In altre parole, l'architettura è favorevole all'inclusione di un certo calcolo all'interno della memoria, e i produttori di chip saranno incentivati a farlo.
+
+## Il Percorso Avanti e i Possibili Vincitori
+
+C'è frutta facile da cogliere qui: considerate cosa si potrebbe fare se l'HBM adottasse la velocità della GDDR7 di trentadue gigabit al secondo per filo dati. La GDDR7 dimostra che transistor abbastanza veloci possono essere fatti sui chip DRAM, e la distanza verticale attraverso i TSV verso lo stack base è sotto un millimetro, il che dovrebbe mantenere l'energia per bit nell'intervallo di zero virgola venticinque picojoule per bit. Sorge la domanda: perché JEDEC non si orienterebbe verso uno standard migliorato qui?
+
+Le interfacce esterne sul chip base potrebbero essere sostanzialmente aggiornate a design moderni che offrono più di un terabyte al secondo per millimetro di bordo, a energia frazionale di picojoule per bit. Qualcuno vincerà alla grande nelle guerre della proprietà intellettuale. Sebbene sia possibile che JEDEC adotti una scelta come standard, più probabilmente sarà fatto da coppie memoria-fornitore GPU che si muovono più velocemente, poiché JEDEC di solito impiega anni.
+
+Vediamo già un cambiamento reale possibile nell'HBM4 con l'accettazione di chip base di terze parti, che è destinato a scatenare esperimenti. Vedremo probabilmente controllo del canale scaricato, pura estensione del fabric sull'interconnessione, ridotta energia per bit su centimetri di distanza e concatenamento in serie ad altre righe di HBM più lontane dall'host, o a memoria di secondo livello come banchi di LPDDR.
+
+In questo modo i design possono aggirare i limiti di potenza nel tentativo di fare calcolo all'interno dello stack di memoria e invece utilizzare un'interfaccia modernizzata sul chip base per consentire ai chip vicini la larghezza di banda e la bassa energia per bit per il calcolo come se fosse nella memoria.
+
+## Conclusioni e Prospettive
+
+L'industria delle DRAM si trova a un punto di svolta critico. Dopo decenni di progressi costanti, la scalabilità tradizionale ha raggiunto limiti fondamentali. I condensatori sono così piccoli e con aspetti così estremi che ulteriori riduzioni sono quasi impossibili con le tecnologie attuali. Gli amplificatori di senso devono rilevare cariche sempre più deboli mentre vengono compressi in spazi sempre più piccoli.
+
+L'esplosione dell'intelligenza artificiale ha reso questi problemi ancora più urgenti. I modelli di AI richiedono quantità massicce di memoria con larghezza di banda estremamente elevata, e l'HBM, sebbene efficace, è costosa e difficile da produrre. Con l'HBM che rappresenta oltre il sessanta percento del costo dei sistemi come Blackwell di Nvidia, l'industria non può permettersi di continuare su questa traiettoria indefinitamente.
+
+Le soluzioni a breve termine, come i layout 4F² e i transistor a canale verticale, offrono miglioramenti incrementali ma non risolvono i problemi fondamentali. Le memorie emergenti come FeRAM e MRAM mostrano promesse ma devono ancora superare sfide significative di costo, endurance e scala di produzione prima di poter sfidare seriamente le DRAM consolidate.
+
+La vera rivoluzione probabilmente verrà dall'architettura Compute in Memory e dall'arrivo della DRAM 3D. Spostare la logica di controllo all'interno dei chip di memoria, utilizzare interfacce moderne ad alta velocità e sfruttare l'enorme potenziale latente dei banchi di memoria potrebbe sbloccare miglioramenti di prestazioni di ordini di grandezza. L'energia per bit potrebbe scendere da due picojoule a zero virgola venticinque picojoule, mentre il throughput potrebbe aumentare di dieci volte o più.
+
+L'HBM4 con chip base personalizzati rappresenta il primo passo verso questa nuova era. L'accettazione di chip base di terze parti e la possibilità di personalizzazione per singoli clienti apriranno la porta a innovazioni che finora erano impossibili sotto gli standard rigidi di JEDEC.
+
+I vincitori in questa transizione saranno probabilmente le aziende che possono integrare logica avanzata con memoria ad alte prestazioni: SK Hynix con la sua partnership con TSMC, e potenzialmente Micron se riuscirà a scalare rapidamente la produzione. Samsung, nonostante le sue difficoltà attuali con le rese HBM, ha risorse enormi e potrebbe recuperare. Le startup come Eliyan che sviluppano interfacce innovative potrebbero diventare fornitori critici di proprietà intellettuale.
+
+L'industria dei semiconduttori sta per entrare in un periodo di cambiamento fondamentale nell'architettura della memoria. Dopo cinquant'anni di relativa stabilità nell'architettura di base delle DRAM, la combinazione di limiti fisici e le esigenze dell'intelligenza artificiale stanno forzando una reimaginazione completa di come la memoria dovrebbe essere progettata, fabbricata e integrata nei sistemi. Le aziende che riusciranno a navigare con successo questa transizione domineranno l'era dell'intelligenza artificiale che si sta rapidamente avvicinando.
